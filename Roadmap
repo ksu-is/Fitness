@@ -1,4 +1,13 @@
-[x]Licensing
-[x] Readme
-[] Add nutrition database to code
-[] 
+# __*Project Road Map*__
+
+- [x] configure console app baseline 
+- [x] look into tkinter transformation
+- [x] create flow chart model of initial idea process
+- [x] find github code to support ideas
+- [x] research multiple frame opening in one tkinter window
+- [x] research datbase view inside of tkinter frame
+- [x ] create readme documentation for other users to use this application
+- [] finsh ppt presentation
+- [ ] add nutrition database
+- [ ] create user specific greeting
+- [ ] 
