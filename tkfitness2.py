@@ -5,6 +5,7 @@ from tkinter.ttk import *
 import sqlite3 as sq
 from tkinter import ttk
 
+
 class TrishApp(tk.Tk):
     def __init__(self, master=None, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -17,7 +18,7 @@ class TrishApp(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.title("Fitness Pizza in My Mouth")
+        self.title("Fitness Calorie Tracker")
         self.geometry("800x700+0+0")
         self.bind('<Escape>', StartPage.click_cancel)
 
@@ -84,6 +85,8 @@ class PageOne(tk.Frame):
         viewbutton.pack()
         editbutton = tk.Button(self, height=5, text='Add Your Daily Nutrition Info', command=lambda: controller.show_frame("PageThree"))
         editbutton.pack()
+        viewbutton = tk.Button(self, height=5,text='View Stored Nutrition to Add', command=lambda: controller.show_frame("PageTwo"))
+        viewbutton.pack()
 
 
         button = tk.Button(self, text="Go to the start page",
@@ -106,7 +109,7 @@ class PageTwo(tk.Frame):
         button.pack(pady=100)
 
         def connect():
-            conn = sq.connect('nutrition.db') #dB browser for sqlite needed
+            conn = sq.connect('database.sh') #dB browser for sqlite needed
             c = conn.cursor()
             c.execute("CREATE TABLE IF NOT EXISTS breakfast(id INTEGER PRIMARY KEY, First TEXT, Surname TEXT)")
             conn.commit()
@@ -318,9 +321,60 @@ class PageThree(tk.Frame):
         button_2 = tk.Button(self,text= "Clear",command=clear)
         button_2.place(x=500,y=650)
 
+class PageFour(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text=" - Add Your Daily Nutrition Info - ", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
 
+        conn = sq.connect('nutrition.db') #dB browser for sqlite needed
+        c = conn.cursor()
+
+        button = tk.Button(self, text="Go back to Menu",
+                           command=lambda: controller.show_frame("PageOne"))
+        button.pack()
+    def connect():
+            conn = sq.connect('nutrition.db') #dB browser for sqlite needed
+            c = conn.cursor()
+            c.execute("CREATE TABLE IF NOT EXISTS breakfast(id INTEGER PRIMARY KEY, First TEXT, Surname TEXT)")
+            conn.commit()
+            conn.close()
+    def view():
+            conn = sq.connect("nutrition.db")
+            c = conn.cursor()
+            c.execute("SELECT * FROM Breakfast")
+            rows = c.fetchall()
+            for row in rows:
+                print(row) # it print all records in the database
+                bftree.insert("", tk.END, values=row)
+
+            c.execute("SELECT * FROM Lunch")
+            rows = c.fetchall()
+            for row in rows:
+                print(row) # it print all records in the database
+                ltree.insert("", tk.END, values=row)
+
+            c.execute("SELECT * from Dinner")
+            rows = c.fetchall()
+            for row in rows:
+                print(row) # it print all records in the database
+                dtree.insert("", tk.END, values=row)
+            
+            c.execute("SELECT * FROM Snack")
+            rows = c.fetchall()
+            for row in rows:
+                print(row) # it print all records in the database
+                stree.insert("", tk.END, values=row)
+            
+            find_calories = ("SELECT SUM(calories), SUM(totalfat),SUM(calories)+ SUM(totalfat) as 'Total' FROM Breakfast")
+            c.execute(find_calories)
+            print(c.fetchone()[0])
+
+            conn.close()
 
 if __name__ == '__main__':
     
     app = TrishApp()
     app.mainloop()
+
