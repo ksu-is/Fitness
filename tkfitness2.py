@@ -3,6 +3,7 @@ from tkinter import font as tkfont
 from tkinter import *
 from tkinter.ttk import *
 import sqlite3 as sq
+#use tutorials for sqlite http://www.sqlitetutorial.net/sqlite-python/creating-database/
 from tkinter import ttk
 
 
