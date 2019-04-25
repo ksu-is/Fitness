@@ -7,7 +7,8 @@
 - [x] research multiple frame opening in one tkinter window
 - [x] research datbase view inside of tkinter frame
 - [x ] create readme documentation for other users to use this application
-- [] finsh ppt presentation
-- [ ] add nutrition database
-- [ ] create user specific greeting
-- [ ] 
+- [x] finsh ppt presentation
+- [x] add nutrition database
+- [x ] change background color
+- [ ] get database to connect properly
+- [] Change drop down menu colors
