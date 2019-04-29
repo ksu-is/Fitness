@@ -3,15 +3,24 @@ from tkinter import font as tkfont
 from tkinter import *
 from tkinter.ttk import *
 import sqlite3 as sq
-#use tutorials for sqlite http://www.sqlitetutorial.net/sqlite-python/creating-database/
 from tkinter import ttk
-
+from sqlite3 import Error
+ 
+ 
+def create_connection(db_file):
+    """ create a database connection to a SQLite database """
+    try:
+        conn = sqlite3.connect('nutrition.db')
+        print(sqlite3.version)
+    except Error as e:
+        print(e)
+   
 
 class TrishApp(tk.Tk):
     def __init__(self, master=None, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title_font = tkfont.Font(font=("Courier", 20), weight="bold")
-        self.tk_setPalette(background="black")
+        self.tk_setPalette(background="blue")
         
 
         container = tk.Frame(self)
@@ -55,7 +64,7 @@ class StartPage(tk.Frame):
         tk.Label(dialog_frame, text="Username:")
         self.name = tk.Entry(self, background='black', width=24).pack()
 
-        button1 = tk.Button(self, text='Login', command=lambda: controller.show_frame("PageOne"))
+        button1 = tk.Button(self, text='Login', background="black", command=lambda: controller.show_frame("PageOne"))
         button1.pack()
         button2 = tk.Button(self, text='Cancel', command=self.click_cancel)
         button2.pack()
@@ -69,7 +78,7 @@ class StartPage(tk.Frame):
         print("The user clicked 'Cancel'")
         print(self.name.get())
 
-    admins = {'jasmine':'abc123','david':'ABC123'}
+    admins = {'brianna':'abc123','david':'ABC123'}
 
 class PageOne(tk.Frame):
 
@@ -82,11 +91,11 @@ class PageOne(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
         label2 = tk.Label(self, text="What would you like to do?" ,font=('Courier', 12))
         label2.pack()
-        viewbutton = tk.Button(self, height=5,text='View Your Daily Nutrition Info', command=lambda: controller.show_frame("PageTwo"))
+        viewbutton = tk.Button(self, height=3,text='View Your Daily Nutrition Info', command=lambda: controller.show_frame("PageTwo"))
         viewbutton.pack()
-        editbutton = tk.Button(self, height=5, text='Add Your Daily Nutrition Info', command=lambda: controller.show_frame("PageThree"))
+        editbutton = tk.Button(self, height=3, text='Add Your Daily Nutrition Info', command=lambda: controller.show_frame("PageThree"))
         editbutton.pack()
-        viewbutton = tk.Button(self, height=5,text='View Stored Nutrition to Add', command=lambda: controller.show_frame("PageTwo"))
+        viewbutton = tk.Button(self, height=3,text='View Stored Nutrition to Add', command=lambda: controller.show_frame("PageTwo"))
         viewbutton.pack()
 
 
@@ -109,12 +118,7 @@ class PageTwo(tk.Frame):
                         command=lambda: controller.show_frame("PageOne"))
         button.pack(pady=100)
 
-        def connect():
-            conn = sq.connect('database.sh') #dB browser for sqlite needed
-            c = conn.cursor()
-            c.execute("CREATE TABLE IF NOT EXISTS breakfast(id INTEGER PRIMARY KEY, First TEXT, Surname TEXT)")
-            conn.commit()
-            conn.close()
+      
         def view():
             conn = sq.connect("nutrition.db")
             c = conn.cursor()
@@ -146,7 +150,7 @@ class PageTwo(tk.Frame):
             c.execute(find_calories)
             print(c.fetchone()[0])
 
-            conn.close()
+            
 
         bflabel = tk.Label(self, font=controller.title_font, text="Breakfast")
         bflabel.pack()
@@ -340,7 +344,7 @@ class PageFour(tk.Frame):
             c = conn.cursor()
             c.execute("CREATE TABLE IF NOT EXISTS breakfast(id INTEGER PRIMARY KEY, First TEXT, Surname TEXT)")
             conn.commit()
-            conn.close()
+           
     def view():
             conn = sq.connect("nutrition.db")
             c = conn.cursor()
@@ -372,10 +376,9 @@ class PageFour(tk.Frame):
             c.execute(find_calories)
             print(c.fetchone()[0])
 
-            conn.close()
+            
 
 if __name__ == '__main__':
     
     app = TrishApp()
     app.mainloop()
-
