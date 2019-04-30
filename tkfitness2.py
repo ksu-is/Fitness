@@ -6,21 +6,14 @@ import sqlite3 as sq
 from tkinter import ttk
 from sqlite3 import Error
  
- 
-def create_connection(db_file):
-    """ create a database connection to a SQLite database """
-    try:
-        conn = sqlite3.connect('nutrition.db')
-        print(sqlite3.version)
-    except Error as e:
-        print(e)
    
 
 class TrishApp(tk.Tk):
     def __init__(self, master=None, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.title_font = tkfont.Font(font=("Courier", 20), weight="bold")
+        self.title_font = tkfont.Font(font=("Courier", 20), weight="bold", foreground="black")
         self.tk_setPalette(background="blue")
+        self.db = sq.connect('nutrition.db')
         
 
         container = tk.Frame(self)
@@ -64,9 +57,9 @@ class StartPage(tk.Frame):
         tk.Label(dialog_frame, text="Username:")
         self.name = tk.Entry(self, background='black', width=24).pack()
 
-        button1 = tk.Button(self, text='Login', background="black", command=lambda: controller.show_frame("PageOne"))
+        button1 = tk.Button(self, text='Login', highlightbackground='black', command=lambda: controller.show_frame("PageOne"))
         button1.pack()
-        button2 = tk.Button(self, text='Cancel', command=self.click_cancel)
+        button2 = tk.Button(self, text='Cancel',highlightbackground='black', command=self.click_cancel)
         button2.pack()
 
         
@@ -91,15 +84,15 @@ class PageOne(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
         label2 = tk.Label(self, text="What would you like to do?" ,font=('Courier', 12))
         label2.pack()
-        viewbutton = tk.Button(self, height=3,text='View Your Daily Nutrition Info', command=lambda: controller.show_frame("PageTwo"))
+        viewbutton = tk.Button(self, height=3,text='View Your Daily Nutrition Info', highlightbackground='black', command=lambda: controller.show_frame("PageTwo"))
         viewbutton.pack()
-        editbutton = tk.Button(self, height=3, text='Add Your Daily Nutrition Info', command=lambda: controller.show_frame("PageThree"))
+        editbutton = tk.Button(self, height=3, text='Add Your Daily Nutrition Info', highlightbackground='black', command=lambda: controller.show_frame("PageThree"))
         editbutton.pack()
-        viewbutton = tk.Button(self, height=3,text='View Stored Nutrition to Add', command=lambda: controller.show_frame("PageTwo"))
+        viewbutton = tk.Button(self, height=3,text='View Stored Nutrition to Add', highlightbackground='black', command=lambda: controller.show_frame("PageTwo"))
         viewbutton.pack()
 
 
-        button = tk.Button(self, text="Go to the start page",
+        button = tk.Button(self, text="Go to the start page", highlightbackground='black',
                            command=lambda: controller.show_frame("StartPage"))
         button.pack(pady=100)
 
@@ -122,10 +115,9 @@ class PageTwo(tk.Frame):
         def view():
             conn = sq.connect("nutrition.db")
             c = conn.cursor()
-            c.execute("SELECT * FROM Breakfast")
             rows = c.fetchall()
             for row in rows:
-                print(row) # it print all records in the database
+                print(row)
                 bftree.insert("", tk.END, values=row)
 
             c.execute("SELECT * FROM Lunch")
@@ -256,36 +248,37 @@ class PageThree(tk.Frame):
         compoundlist = {'Breakfast', 'Lunch', 'Dinner','Snack'}
         compd = tk.OptionMenu(self, comp, *compoundlist)#For 1st drop down list 
         compd.place(x=400,y=105)
+        
 
         # entry box for input
-        brandT = tk.Entry(self, textvariable=brand)
+        brandT = tk.Entry(self, textvariable=brand, highlightbackground='black')
         brandT.place(x=400,y=155)
 
-        itemT = tk.Entry(self, textvariable=item)
+        itemT = tk.Entry(self, textvariable=item, highlightbackground='black')
         itemT.place(x=400,y=205)
 
-        caloriesT = tk.Entry(self, textvariable=calories)
+        caloriesT = tk.Entry(self, textvariable=calories, highlightbackground='black')
         caloriesT.place(x=400,y=255)
 
-        fatT = tk.Entry(self, textvariable=fat)
+        fatT = tk.Entry(self, textvariable=fat, highlightbackground='black')
         fatT.place(x=400,y=305)
 
-        proteinT = tk.Entry(self, textvariable=protein)
+        proteinT = tk.Entry(self, textvariable=protein, highlightbackground='black')
         proteinT.place(x=400,y=355)
 
-        carbsT = tk.Entry(self, textvariable=carbs)
+        carbsT = tk.Entry(self, textvariable=carbs, highlightbackground='black')
         carbsT.place(x=400,y=405)
 
-        fiberT = tk.Entry(self, textvariable=fiber)
+        fiberT = tk.Entry(self, textvariable=fiber, highlightbackground='black')
         fiberT.place(x=400,y=455)
 
-        sugarT = tk.Entry(self, textvariable=sugar)
+        sugarT = tk.Entry(self, textvariable=sugar, highlightbackground='black')
         sugarT.place(x=400,y=505)
 
-        sodiumT = tk.Entry(self, textvariable=sodium)
+        sodiumT = tk.Entry(self, textvariable=sodium, highlightbackground='black')
         sodiumT.place(x=400,y=555)
 
-        button = tk.Button(self, text="Go back to Menu",
+        button = tk.Button(self, text="Go back to Menu", highlightbackground='black',
                            command=lambda: controller.show_frame("PageOne"))
         button.pack()
 
@@ -320,10 +313,10 @@ class PageThree(tk.Frame):
             sodium.set('')
 
         
-        button_1 = tk.Button(self,text="Submit", command=post)
+        button_1 = tk.Button(self,text="Submit", highlightbackground='black', command=post)
         button_1.place(x=400,y=650)
 
-        button_2 = tk.Button(self,text= "Clear",command=clear)
+        button_2 = tk.Button(self,text= "Clear", highlightbackground='black',command=clear)
         button_2.place(x=500,y=650)
 
 class PageFour(tk.Frame):
@@ -336,7 +329,7 @@ class PageFour(tk.Frame):
         conn = sq.connect('nutrition.db') #dB browser for sqlite needed
         c = conn.cursor()
 
-        button = tk.Button(self, text="Go back to Menu",
+        button = tk.Button(self, text="Go back to Menu", highlightbackground='black',
                            command=lambda: controller.show_frame("PageOne"))
         button.pack()
     def connect():
@@ -345,36 +338,7 @@ class PageFour(tk.Frame):
             c.execute("CREATE TABLE IF NOT EXISTS breakfast(id INTEGER PRIMARY KEY, First TEXT, Surname TEXT)")
             conn.commit()
            
-    def view():
-            conn = sq.connect("nutrition.db")
-            c = conn.cursor()
-            c.execute("SELECT * FROM Breakfast")
-            rows = c.fetchall()
-            for row in rows:
-                print(row) # it print all records in the database
-                bftree.insert("", tk.END, values=row)
 
-            c.execute("SELECT * FROM Lunch")
-            rows = c.fetchall()
-            for row in rows:
-                print(row) # it print all records in the database
-                ltree.insert("", tk.END, values=row)
-
-            c.execute("SELECT * from Dinner")
-            rows = c.fetchall()
-            for row in rows:
-                print(row) # it print all records in the database
-                dtree.insert("", tk.END, values=row)
-            
-            c.execute("SELECT * FROM Snack")
-            rows = c.fetchall()
-            for row in rows:
-                print(row) # it print all records in the database
-                stree.insert("", tk.END, values=row)
-            
-            find_calories = ("SELECT SUM(calories), SUM(totalfat),SUM(calories)+ SUM(totalfat) as 'Total' FROM Breakfast")
-            c.execute(find_calories)
-            print(c.fetchone()[0])
 
             
 
